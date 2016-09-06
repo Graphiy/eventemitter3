@@ -285,6 +285,7 @@ EventEmitter.prototype.removeAllListeners = function removeAllListeners(event) {
 //
 EventEmitter.prototype.off = EventEmitter.prototype.removeListener;
 EventEmitter.prototype.addListener = EventEmitter.prototype.on;
+EventEmitter.prototype.trigger = EventEmitter.prototype.emit;
 
 //
 // This function doesn't apply anymore.
