@@ -1,12 +1,15 @@
-/* istanbul ignore next */
 describe('EventEmitter', function tests() {
   'use strict';
 
-  var EventEmitter = require('./')
+  var EventEmitter = require('../')
     , assume = require('assume');
 
   it('exposes a `prefixed` property', function () {
     assume(EventEmitter.prefixed).is.either([false, '~']);
+  });
+
+  it('exposes a module namespace object', function() {
+    assume(EventEmitter.EventEmitter).equals(EventEmitter);
   });
 
   it('inherits when used with `require("util").inherits`', function () {
@@ -564,18 +567,32 @@ describe('EventEmitter', function tests() {
     });
 
     it('returns an array listing the events that have listeners', function () {
-      var e = new EventEmitter();
+      var e = new EventEmitter()
+        , original;
 
       function bar() {}
+
+      if (Object.getOwnPropertySymbols) {
+        //
+        // Monkey patch `Object.getOwnPropertySymbols()` to increase coverage
+        // on Node.js > 0.10.
+        //
+        original = Object.getOwnPropertySymbols;
+        Object.getOwnPropertySymbols = undefined;
+      }
 
       e.on('foo', function () {});
       e.on('bar', bar);
 
-      assume(e.eventNames()).eql(['foo', 'bar']);
-
-      e.removeListener('bar', bar);
-
-      assume(e.eventNames()).eql(['foo']);
+      try {
+        assume(e.eventNames()).eql(['foo', 'bar']);
+        e.removeListener('bar', bar);
+        assume(e.eventNames()).eql(['foo']);
+      } catch (ex) {
+        throw ex;
+      } finally {
+        if (original) Object.getOwnPropertySymbols = original;
+      }
     });
 
     it('does not return inherited property identifiers', function () {

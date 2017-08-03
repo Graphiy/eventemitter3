@@ -32,9 +32,15 @@ support.
 ## Installation
 
 ```bash
-$ npm install --save eventemitter3        # npm
-$ component install primus/eventemitter3  # Component
-$ bower install eventemitter3             # Bower
+$ npm install --save eventemitter3
+```
+
+## CDN
+
+Recommended CDN:
+
+```text
+https://unpkg.com/eventemitter3@latest/umd/eventemitter3.min.js
 ```
 
 ## Usage
@@ -92,7 +98,6 @@ EE.listeners('unknown-name', true); // returns false
 This module is well tested. You can run:
 
 - `npm test` to run the tests under Node.js.
-- `npm run coverage` to get the code coverage.
 - `npm run test-browser` to run the tests in real browsers via Sauce Labs.
 
 We also have a set of benchmarks to compare EventEmitter3 with some available
